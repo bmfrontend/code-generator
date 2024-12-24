@@ -7923,6 +7923,7 @@ var SchemaParser = class {
     let containers;
     if (schema.componentsTree.length > 0) {
       const firstRoot = schema.componentsTree[0];
+      firstRoot.fileName = firstRoot.fileName || firstRoot.componentName;
       if (!firstRoot.fileName && !isValidContainerType(firstRoot)) {
         const container = {
           ...firstRoot,
@@ -10931,6 +10932,7 @@ function generateObject(value, scope, options = {}) {
     const v = generateUnknownType(value[key], scope, options);
     return `${propName}: ${v}`;
   }).join(",\n");
+  console.log("generateObject", `{${body}}`);
   return `{${body}}`;
 }
 function generateUnknownType(value, scope, options = {}) {
@@ -11059,7 +11061,7 @@ function generateAttrValue(attrData, scope, config) {
     valueStr = valueStr ? valueStr.replace(/^"|"$/g, "") : "";
     valueStr = encodeXSS(valueStr);
   }
-  if (["ngModel", "nzOptions", "nzShowUploadList", "tabTitleList", "tabContentList", "nzPopconfirmPlacement"].includes(attrData.attrName)) {
+  if (["span", "ngModel", "nzOptions", "nzShowUploadList", "tabTitleList", "tabContentList", "nzPopconfirmPlacement", "nzTooltipIcon"].includes(attrData.attrName)) {
     attrData.attrName = `[${attrData.attrName}]`;
     valueStr = valueStr ? `"${valueStr.replace(/"/g, "'")}"` : "";
   }
@@ -11262,9 +11264,15 @@ var pluginFactory2 = (config) => {
     Component: { startTag: "div", closeTag: "div" },
     Page: { startTag: "div", closeTag: "div" },
     Block: { startTag: "div", closeTag: "div" },
+    Row: { startTag: "div nz-row", closeTag: "div" },
+    Col: { startTag: "div nz-col", closeTag: "div" },
     Button: { startTag: "button bm-button", closeTag: "button" },
     Divider: { startTag: "bm-divider", closeTag: "bm-divider" },
     Icon: { startTag: "i bmIcon", closeTag: "i" },
+    Form: { startTag: "form bmForm", closeTag: "form" },
+    FormItem: { startTag: "bm-form-item", closeTag: "bm-form-item" },
+    FormLabel: { startTag: "bm-form-label", closeTag: "bm-form-label" },
+    FormControl: { startTag: "bm-form-control", closeTag: "bm-form-control" },
     CheckboxGroup: { startTag: "bm-checkbox-group", closeTag: "bm-checkbox-group" },
     Checkbox: { startTag: "label bm-checkbox", closeTag: "label" },
     CompoundSelector: { startTag: "bm-compound-selector", closeTag: "bm-compound-selector" },
