@@ -10921,19 +10921,42 @@ var import_lowcode_code_generator13 = __toESM(require_lib());
 var import_lowcode_code_generator11 = __toESM(require_lib());
 var import_lodash = __toESM(require("lodash"));
 function generateObject(value, scope, options = {}) {
-  if (value.type === "i18n") {
-    if (value.params && typeof value.params === "object") {
-      return `this._i18nText(${generateUnknownType(import_lodash.default.omit(value, "type"), scope, options)})`;
-    }
-    return `this._i18nText(${JSON.stringify(import_lodash.default.omit(value, "type"))})`;
+  if (value.type === "JSExpression") {
+    return "";
   }
   const body = Object.keys(value).map((key) => {
     const propName = JSON.stringify(key);
-    const v = generateUnknownType(value[key], scope, options);
-    return `${propName}: ${v}`;
-  }).join(",\n");
-  console.log("generateObject", `{${body}}`);
-  return `{${body}}`;
+    const v = generateOtherType(value[key], scope, options);
+    return `${key}: ${v}`;
+  }).join(",");
+  return `"{${body}}"`;
+}
+function generateOtherType(value, scope, options = {}) {
+  if (import_lodash.default.isUndefined(value)) {
+    return "undefined";
+  }
+  if (import_lodash.default.isNull(value)) {
+    return "null";
+  }
+  if (import_lodash.default.isString(value)) {
+    return value.trim() ? `'${value}'` : "";
+  }
+  if (import_lodash.default.isNumber(value)) {
+    return `${String(value)}`;
+  }
+  if (import_lodash.default.isBoolean(value)) {
+    return value ? "true" : "false";
+  }
+  if (import_lodash.default.isArray(value)) {
+    let jsonString = value.length ? JSON.stringify(value) : "";
+    jsonString = jsonString.replace(/"([^"]+)":/g, "$1:");
+    jsonString = jsonString.replace(/"/g, "'");
+    return `${jsonString}`;
+  }
+  if (import_lodash.default.isObject(value)) {
+    return Object.keys(value).length ? generateObject(value, scope, options) : "";
+  }
+  throw new import_lowcode_code_generator11.CodeGeneratorError("Meet unknown composite value type");
 }
 function generateUnknownType(value, scope, options = {}) {
   if (import_lodash.default.isUndefined(value)) {
@@ -10943,16 +10966,22 @@ function generateUnknownType(value, scope, options = {}) {
     return "null";
   }
   if (import_lodash.default.isString(value)) {
-    return value.trim() ? JSON.stringify(value) : "";
+    return value.trim() ? `"'${value}'"` : "";
   }
   if (import_lodash.default.isNumber(value)) {
-    return String(value);
+    return `"${String(value)}"`;
   }
   if (import_lodash.default.isBoolean(value)) {
-    return value ? "true" : "false";
+    return value ? "'true'" : "'false'";
   }
   if (import_lodash.default.isArray(value)) {
-    return value.length ? JSON.stringify(value) : "";
+    if (!value.length) {
+      return "";
+    }
+    let jsonString = JSON.stringify(value);
+    jsonString = jsonString.replace(/"([^"]+)":/g, "$1:");
+    jsonString = jsonString.replace(/"/g, "'");
+    return `"${jsonString}"`;
   }
   if (import_lodash.default.isObject(value)) {
     return Object.keys(value).length ? generateObject(value, scope, options) : "";
@@ -10997,7 +11026,7 @@ function convertObjectToString(styleObj) {
   return Object.keys(styleObj).map((key) => {
     const kebabCaseKey = key.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
     return `${kebabCaseKey}: ${styleObj[key]}`;
-  }).join("; ");
+  }).join(";");
 }
 function encodeXSS(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
@@ -11007,8 +11036,9 @@ function isIPublicTypeJSSlot(variable) {
 }
 function generateAttrValue(attrData, scope, config) {
   var _a, _b;
-  let valueStr = "";
   let type = import_lowcode_code_generator12.PIECE_TYPE.ATTR;
+  let name = `[${attrData.attrName}]`;
+  let value = "";
   const ignoreList = [
     "nzShowTotal",
     "nzTabBarExtraContent",
@@ -11016,10 +11046,13 @@ function generateAttrValue(attrData, scope, config) {
     "nzAddIcon"
   ];
   if (ignoreList.includes(attrData.attrName)) {
-    valueStr = "";
+    value = "";
+  } else if (typeof attrData.attrValue === "string" && !attrData.attrValue) {
+    value = "";
   } else if (attrData.attrName === "style") {
+    name = attrData.attrName;
     const resultString = convertObjectToString(attrData.attrValue);
-    valueStr = `${JSON.stringify(resultString)}`;
+    value = `${JSON.stringify(resultString)} `;
   } else if (isIPublicTypeJSSlot(attrData.attrValue)) {
     const childrenParts = [];
     const attrValue = (_b = (_a = attrData.attrValue) == null ? void 0 : _a.value) != null ? _b : "";
@@ -11046,38 +11079,23 @@ function generateAttrValue(attrData, scope, config) {
     });
     return childrenParts;
   } else {
-    if (typeof attrData.attrValue === "string" && !attrData.attrValue) {
-      valueStr = "";
-    } else {
-      valueStr = generateCompositeAjsType(attrData.attrValue, scope, {
-        handlers: config == null ? void 0 : config.handlers,
-        nodeGenerator: config == null ? void 0 : config.self
-      });
-    }
+    value = generateCompositeAjsType(attrData.attrValue, scope, {
+      handlers: config == null ? void 0 : config.handlers,
+      nodeGenerator: config == null ? void 0 : config.self
+    });
   }
-  valueStr = cleanValue(valueStr);
   if (attrData.attrName === "content") {
     type = import_lowcode_code_generator12.PIECE_TYPE.CHILDREN;
-    valueStr = valueStr ? valueStr.replace(/^"|"$/g, "") : "";
-    valueStr = encodeXSS(valueStr);
+    value = value ? value.replace(/^"|"$/g, "") : "";
+    value = encodeXSS(value);
   }
   if (["span", "ngModel", "nzOptions", "pageInfo", "executeContext", "nzShowUploadList", "headers", "apiParams", "primaryKeys", "dataKeys", "fieldsForAdvancedSearch", "rowDataParams", "tabTitleList", "tabContentList", "nzPopconfirmPlacement", "nzTooltipIcon"].includes(attrData.attrName)) {
-    attrData.attrName = `[${attrData.attrName}]`;
-    valueStr = valueStr ? `"${valueStr.replace(/"/g, "'")}"` : "";
+    value = value ? value : "";
   }
-  if (valueStr === "") {
+  if (value === "" || value === "") {
     return [];
   }
-  return [
-    {
-      type,
-      name: attrData.attrName,
-      value: valueStr
-    }
-  ];
-}
-function cleanValue(value) {
-  return value.replace(/\s+/g, "");
+  return [{ type, name, value }];
 }
 function generateAttr(attrName, attrValue, scope, config) {
   let pieces;
@@ -11111,11 +11129,7 @@ function generateAttrs(nodeItem, scope, config) {
     if (!Array.isArray(props)) {
       Object.keys(props).forEach((propName) => {
         if (isValidIdentifier(propName)) {
-          let newPropName = propName;
-          if (propName === "className") {
-            return;
-          }
-          pieces = pieces.concat(generateAttr(newPropName, props[propName], scope, config));
+          pieces = pieces.concat(generateAttr(propName, props[propName], scope, config));
         }
       });
     } else {
@@ -11745,7 +11759,7 @@ var pluginFactory8 = () => {
             templateUrl: './${ir.fileName}.component.html',
             styleUrls: ['./${ir.fileName}.component.less'],
           })
-          export class ${componentClassName}  implements OnInit {
+          export class ${componentClassName}Component  implements OnInit {
       `,
       linkAfter: [
         COMMON_CHUNK_NAME.ExternalDepsImport,
