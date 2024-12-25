@@ -11061,7 +11061,7 @@ function generateAttrValue(attrData, scope, config) {
     valueStr = valueStr ? valueStr.replace(/^"|"$/g, "") : "";
     valueStr = encodeXSS(valueStr);
   }
-  if (["span", "ngModel", "nzOptions", "nzShowUploadList", "tabTitleList", "tabContentList", "nzPopconfirmPlacement", "nzTooltipIcon"].includes(attrData.attrName)) {
+  if (["span", "ngModel", "nzOptions", "pageInfo", "executeContext", "nzShowUploadList", "headers", "apiParams", "primaryKeys", "dataKeys", "fieldsForAdvancedSearch", "rowDataParams", "tabTitleList", "tabContentList", "nzPopconfirmPlacement", "nzTooltipIcon"].includes(attrData.attrName)) {
     attrData.attrName = `[${attrData.attrName}]`;
     valueStr = valueStr ? `"${valueStr.replace(/"/g, "'")}"` : "";
   }
