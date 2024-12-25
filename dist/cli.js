@@ -11028,9 +11028,6 @@ function convertObjectToString(styleObj) {
     return `${kebabCaseKey}: ${styleObj[key]}`;
   }).join(";");
 }
-function encodeXSS(str) {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
 function isIPublicTypeJSSlot(variable) {
   return variable && variable.type === "JSSlot";
 }
@@ -11086,8 +11083,7 @@ function generateAttrValue(attrData, scope, config) {
   }
   if (attrData.attrName === "content") {
     type = import_lowcode_code_generator12.PIECE_TYPE.CHILDREN;
-    value = value ? value.replace(/^"|"$/g, "") : "";
-    value = encodeXSS(value);
+    value = value ? value.replace(/['"]/g, "") : "";
   }
   if (["span", "ngModel", "nzOptions", "pageInfo", "executeContext", "nzShowUploadList", "headers", "apiParams", "primaryKeys", "dataKeys", "fieldsForAdvancedSearch", "rowDataParams", "tabTitleList", "tabContentList", "nzPopconfirmPlacement", "nzTooltipIcon"].includes(attrData.attrName)) {
     value = value ? value : "";
