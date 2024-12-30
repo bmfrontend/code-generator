@@ -1,6 +1,6 @@
 // src/standalone-loader.ts
 import fetch from "node-fetch";
-var DEFAULT_WORKER_JS = `https://cdn.jsdelivr.net/gh/bmfrontend/code-generator@0.0.3/dist/standalone-worker.min.js`;
+var DEFAULT_WORKER_JS = `https://cdn.jsdelivr.net/gh/bmfrontend/code-generator@0.0.4/dist/standalone-worker.min.js`;
 var DEFAULT_TIMEOUT_IN_MS = 60 * 1e3;
 var workerJsCache = /* @__PURE__ */ new Map();
 async function init({

@@ -10926,7 +10926,8 @@ function generateObject(value, scope, options = {}) {
   }
   const body = Object.keys(value).map((key) => {
     const propName = JSON.stringify(key);
-    const v = generateOtherType(value[key], scope, options);
+    let v = generateOtherType(value[key], scope, options);
+    v = v ? v : "''";
     return `${key}: ${v}`;
   }).join(",");
   return `"{${body}}"`;
@@ -10966,7 +10967,7 @@ function generateUnknownType(value, scope, options = {}) {
     return "null";
   }
   if (import_lodash.default.isString(value)) {
-    return value.trim() ? `"'${value}'"` : "";
+    return value.trim() ? `"${value}"` : "";
   }
   if (import_lodash.default.isNumber(value)) {
     return `"${String(value)}"`;
@@ -11034,23 +11035,27 @@ function isIPublicTypeJSSlot(variable) {
 function generateAttrValue(attrData, scope, config) {
   var _a, _b;
   let type = import_lowcode_code_generator12.PIECE_TYPE.ATTR;
-  let name = `[${attrData.attrName}]`;
+  let name = attrData.attrName;
   let value = "";
   const ignoreList = [
     "nzShowTotal",
     "nzTabBarExtraContent",
     "nzTabBarStyle",
-    "nzAddIcon"
+    "nzAddIcon",
+    "ref"
   ];
+  if (import_lodash2.default.isArray(attrData.attrValue) || import_lodash2.default.isObject(attrData.attrValue) || import_lodash2.default.isBoolean(attrData.attrValue)) {
+    name = `[${attrData.attrName}]`;
+  }
   if (ignoreList.includes(attrData.attrName)) {
     value = "";
   } else if (typeof attrData.attrValue === "string" && !attrData.attrValue) {
     value = "";
   } else if (attrData.attrName === "style") {
-    name = attrData.attrName;
     const resultString = convertObjectToString(attrData.attrValue);
     value = `${JSON.stringify(resultString)} `;
   } else if (isIPublicTypeJSSlot(attrData.attrValue)) {
+    name = `[${attrData.attrName}]`;
     const childrenParts = [];
     const attrValue = (_b = (_a = attrData.attrValue) == null ? void 0 : _a.value) != null ? _b : "";
     if (attrValue) {
@@ -11883,6 +11888,7 @@ var BmModuleMap = {
   Form: "BmFormModule",
   Cascader: "BmCascaderModule",
   Checkbox: "BmCheckboxModule",
+  CheckboxGroup: "BmCheckboxModule",
   CompoundSelector: "BmCompoundSelectorModule",
   DatePicker: "BmDatePickerModule",
   Input: "BmInputModule",
@@ -11960,7 +11966,7 @@ var pluginFactory9 = () => {
       ir.moduleDeps.forEach((pkg) => {
         componentModuleList.push({
           module: BmModuleMap[pkg.exportName],
-          package: pkg.package,
+          package: pkg.ngPackage,
           main: (pkg == null ? void 0 : pkg.main) || ""
         });
       });
@@ -11972,9 +11978,7 @@ var pluginFactory9 = () => {
             type: import_lowcode_code_generator22.ChunkType.STRING,
             fileType: import_lowcode_code_generator22.FileType.TS,
             name: COMMON_CHUNK_NAME.InternalDepsImport,
-            content: `
-              import { ${i.module} } from '${i.package}/${i.main}';
-            `,
+            content: `import { ${i.module} } from '${i.package}/${i.main}';`,
             linkAfter: [COMMON_CHUNK_NAME.ExternalDepsImport]
           });
         }
@@ -12006,7 +12010,7 @@ var pluginFactory9 = () => {
           PagesRoutingModule,
           ${componentModuleList.map((i) => {
         return i.module || "";
-      }).join(",")}
+      }).filter((module2) => module2 !== "").join(",")}
         ],
         declarations: [${componentList.join(",")}],
       })
