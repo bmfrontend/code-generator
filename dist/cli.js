@@ -82,7 +82,7 @@ var require_lib = __commonJS({
       FileType: () => FileType11,
       InternalDependencyType: () => InternalDependencyType2,
       NATIVE_ELE_PKG: () => NATIVE_ELE_PKG2,
-      PIECE_TYPE: () => PIECE_TYPE2,
+      PIECE_TYPE: () => PIECE_TYPE,
       PluginType: () => PluginType,
       ProjectBuilder: () => ProjectBuilder2,
       PublisherError: () => PublisherError,
@@ -151,14 +151,14 @@ var require_lib = __commonJS({
     };
     var PublisherError = class extends CodeGeneratorError7 {
     };
-    var PIECE_TYPE2 = /* @__PURE__ */ ((PIECE_TYPE22) => {
-      PIECE_TYPE22["BEFORE"] = "NodeCodePieceBefore";
-      PIECE_TYPE22["TAG"] = "NodeCodePieceTag";
-      PIECE_TYPE22["ATTR"] = "NodeCodePieceAttr";
-      PIECE_TYPE22["CHILDREN"] = "NodeCodePieceChildren";
-      PIECE_TYPE22["AFTER"] = "NodeCodePieceAfter";
-      return PIECE_TYPE22;
-    })(PIECE_TYPE2 || {});
+    var PIECE_TYPE = /* @__PURE__ */ ((PIECE_TYPE2) => {
+      PIECE_TYPE2["BEFORE"] = "NodeCodePieceBefore";
+      PIECE_TYPE2["TAG"] = "NodeCodePieceTag";
+      PIECE_TYPE2["ATTR"] = "NodeCodePieceAttr";
+      PIECE_TYPE2["CHILDREN"] = "NodeCodePieceChildren";
+      PIECE_TYPE2["AFTER"] = "NodeCodePieceAfter";
+      return PIECE_TYPE2;
+    })(PIECE_TYPE || {});
     var const_exports2 = {};
     __export2(const_exports2, {
       BUILTIN_SLOT_NAMES: () => BUILTIN_SLOT_NAMES2,
@@ -2615,7 +2615,7 @@ ${value.map((v) => {
       }
       return unwrapJsExprQuoteInJsx2(generator(value, scope)) || "null";
     }
-    function executeFunctionStack2(input, scope, funcs, baseFunc, config) {
+    function executeFunctionStack(input, scope, funcs, baseFunc, config) {
       const funcList = [];
       if (Array.isArray(funcs)) {
         funcList.push(...funcs);
@@ -2691,7 +2691,7 @@ ${value.map((v) => {
       }
       if (import_lodash22.default.isArray(value)) {
         if ((_a = options.handlers) == null ? void 0 : _a.array) {
-          return executeFunctionStack2(value, scope, options.handlers.array, generateArray, options);
+          return executeFunctionStack(value, scope, options.handlers.array, generateArray, options);
         }
         return generateArray(value, scope, options);
       }
@@ -2701,7 +2701,7 @@ ${value.map((v) => {
           value: value.variable
         };
         if ((_b = options.handlers) == null ? void 0 : _b.expression) {
-          const expression = executeFunctionStack2(
+          const expression = executeFunctionStack(
             transValue,
             scope,
             options.handlers.expression,
@@ -2714,7 +2714,7 @@ ${value.map((v) => {
       }
       if ((0, import_lowcode_types4.isJSExpression)(value)) {
         if ((_c = options.handlers) == null ? void 0 : _c.expression) {
-          return executeFunctionStack2(
+          return executeFunctionStack(
             value,
             scope,
             options.handlers.expression,
@@ -2726,13 +2726,13 @@ ${value.map((v) => {
       }
       if ((0, import_lowcode_types4.isJSFunction)(value) || isJSExpressionFn(value)) {
         if ((_d = options.handlers) == null ? void 0 : _d.function) {
-          return executeFunctionStack2(value, scope, options.handlers.function, genFunction, options);
+          return executeFunctionStack(value, scope, options.handlers.function, genFunction, options);
         }
         return genFunction(value);
       }
       if ((0, import_lowcode_types4.isJSSlot)(value)) {
         if ((_e = options.handlers) == null ? void 0 : _e.slot) {
-          return executeFunctionStack2(value, scope, options.handlers.slot, genJsSlot, options);
+          return executeFunctionStack(value, scope, options.handlers.slot, genJsSlot, options);
         }
         return genJsSlot(value, scope, options);
       }
@@ -2748,25 +2748,25 @@ ${value.map((v) => {
       }
       if (import_lodash22.default.isObject(value)) {
         if ((_f = options.handlers) == null ? void 0 : _f.object) {
-          return executeFunctionStack2(value, scope, options.handlers.object, generateObject2, options);
+          return executeFunctionStack(value, scope, options.handlers.object, generateObject2, options);
         }
         return generateObject2(value, scope, options);
       }
       if (import_lodash22.default.isString(value)) {
         if ((_g = options.handlers) == null ? void 0 : _g.string) {
-          return executeFunctionStack2(value, scope, options.handlers.string, generateString, options);
+          return executeFunctionStack(value, scope, options.handlers.string, generateString, options);
         }
         return generateString(value);
       }
       if (import_lodash22.default.isNumber(value)) {
         if ((_h = options.handlers) == null ? void 0 : _h.number) {
-          return executeFunctionStack2(value, scope, options.handlers.number, generateNumber, options);
+          return executeFunctionStack(value, scope, options.handlers.number, generateNumber, options);
         }
         return generateNumber(value);
       }
       if (import_lodash22.default.isBoolean(value)) {
         if ((_i = options.handlers) == null ? void 0 : _i.boolean) {
-          return executeFunctionStack2(value, scope, options.handlers.boolean, generateBool, options);
+          return executeFunctionStack(value, scope, options.handlers.boolean, generateBool, options);
         }
         return generateBool(value);
       }
@@ -3406,7 +3406,7 @@ ${value.map((v) => {
         ((_a = scope.bindings) == null ? void 0 : _a.getAllBindings()) || []
       );
     }
-    function mergeNodeGeneratorConfig2(cfg1, cfg2 = {}) {
+    function mergeNodeGeneratorConfig(cfg1, cfg2 = {}) {
       const resCfg = {};
       if (cfg1.handlers || cfg2.handlers) {
         resCfg.handlers = {
@@ -3448,7 +3448,7 @@ ${value.map((v) => {
     function generateAttr2(attrName, attrValue, scope, config) {
       let pieces;
       if (config == null ? void 0 : config.attrPlugins) {
-        pieces = executeFunctionStack2(
+        pieces = executeFunctionStack(
           { attrName, attrValue },
           scope,
           config.attrPlugins,
@@ -3534,7 +3534,7 @@ ${value.map((v) => {
     function generateNodeSchema2(nodeItem, scope, config) {
       const pieces = [];
       if (config == null ? void 0 : config.nodePlugins) {
-        const res = executeFunctionStack2(
+        const res = executeFunctionStack(
           nodeItem,
           scope,
           config.nodePlugins,
@@ -3635,7 +3635,7 @@ ${value.map((v) => {
       nodePlugins: [generateReactExprInJS, generateReactLoopCtrl, generateConditionReactCtrl]
     };
     function createReactNodeGenerator(cfg) {
-      const newCfg = mergeNodeGeneratorConfig2(defaultReactGeneratorConfig, cfg);
+      const newCfg = mergeNodeGeneratorConfig(defaultReactGeneratorConfig, cfg);
       return createNodeGenerator(newCfg);
     }
     function isLiteralAtomicExpr(expr) {
@@ -7600,23 +7600,6 @@ var import_json5 = __toESM(require("json5"));
 var import_jsonc = require("jsonc");
 
 // src/solutions/utils/helper.ts
-function executeFunctionStack(input, scope, funcs, baseFunc, config) {
-  const funcList = [];
-  if (Array.isArray(funcs)) {
-    funcList.push(...funcs);
-  } else {
-    funcList.push(funcs);
-  }
-  let next = baseFunc;
-  while (funcList.length > 0) {
-    const func = funcList.pop();
-    if (func) {
-      const warppedFunc = ((nextFunc) => (i, s, cfg) => func(i, s, cfg, nextFunc))(next);
-      next = warppedFunc;
-    }
-  }
-  return next(input, scope, config);
-}
 function unwrapJsExprQuoteInJsx(jsxExpr) {
   if (jsxExpr.length >= 2 && jsxExpr[0] === "{" && jsxExpr[jsxExpr.length - 1] === "}") {
     return jsxExpr.slice(1, jsxExpr.length - 1);
@@ -10997,29 +10980,6 @@ function generateCompositeAjsType(value, scope, options = {}) {
 // src/solutions/utils/codeForAjs.ts
 var { generateCompositeType } = import_lowcode_code_generator13.default.utils.compositeType;
 var { isValidIdentifier } = import_lowcode_code_generator13.default.utils.validate;
-function mergeNodeGeneratorConfig(cfg1, cfg2 = {}) {
-  const resCfg = {};
-  if (cfg1.handlers || cfg2.handlers) {
-    resCfg.handlers = {
-      ...cfg1.handlers || {},
-      ...cfg2.handlers || {}
-    };
-  }
-  if (cfg1.tagMapping || cfg2.tagMapping) {
-    resCfg.tagMapping = cfg2.tagMapping || cfg1.tagMapping;
-  }
-  if (cfg1.attrPlugins || cfg2.attrPlugins) {
-    resCfg.attrPlugins = [];
-    resCfg.attrPlugins.push(...cfg2.attrPlugins || []);
-    resCfg.attrPlugins.push(...cfg1.attrPlugins || []);
-  }
-  if (cfg1.nodePlugins || cfg2.nodePlugins) {
-    resCfg.nodePlugins = [];
-    resCfg.nodePlugins.push(...cfg2.nodePlugins || []);
-    resCfg.nodePlugins.push(...cfg1.nodePlugins || []);
-  }
-  return resCfg;
-}
 function isPureString(v) {
   return v[0] === "'" && v[v.length - 1] === "'" || v[0] === '"' && v[v.length - 1] === '"';
 }
@@ -11032,30 +10992,56 @@ function convertObjectToString(styleObj) {
 function isIPublicTypeJSSlot(variable) {
   return variable && variable.type === "JSSlot";
 }
+function isDirectiveProperty(value) {
+  return (value == null ? void 0 : value.type) === "Directive";
+}
+function isStandardPieceType(type) {
+  return ["NodeCodePieceAfter" /* AFTER */, "NodeCodePieceChildren" /* CHILDREN */, "NodeCodePieceBefore" /* BEFORE */, "Directive" /* DIRECTIVE */].includes(type);
+}
+function isStyleKey(name) {
+  return name === "style";
+}
+function isEmptyString(value) {
+  return typeof value === "string" && !value;
+}
+function processCodePiece(p) {
+  const { value, type, name } = p;
+  if (isStandardPieceType(type)) {
+    return { value: value || "", type };
+  }
+  if (name && isStyleKey(name)) {
+    return { value: `${name}=${value}`, type };
+  }
+  if (value && isPureString(value)) {
+    const staticContent = getStaticExprValue(value);
+    const encodedString = JSON.stringify(encodeJsxStringNode(staticContent));
+    return { value: `${name}=${encodedString}`, type };
+  }
+  return { value: `${name}=${value}`, type };
+}
 function generateAttrValue(attrData, scope, config) {
   var _a, _b;
-  let type = import_lowcode_code_generator12.PIECE_TYPE.ATTR;
+  let type = "NodeCodePieceAttr" /* ATTR */;
   let name = attrData.attrName;
   let value = "";
-  const ignoreList = [
-    "nzShowTotal",
-    "nzTabBarExtraContent",
-    "nzTabBarStyle",
-    "nzAddIcon",
-    "ref"
-  ];
-  if (import_lodash2.default.isArray(attrData.attrValue) || import_lodash2.default.isObject(attrData.attrValue) || import_lodash2.default.isBoolean(attrData.attrValue)) {
+  const ignoreList = ["nzShowTotal", "nzTabBarExtraContent", "nzTabBarStyle", "nzAddIcon", "ref"];
+  if (ignoreList.includes(attrData.attrName)) {
+    return [];
+  }
+  if (isEmptyString(attrData.attrValue)) {
+    return [];
+  }
+  if (import_lodash2.default.isNumber(attrData.attrValue) || import_lodash2.default.isArray(attrData.attrValue) || import_lodash2.default.isObject(attrData.attrValue) || import_lodash2.default.isBoolean(attrData.attrValue)) {
     name = `[${attrData.attrName}]`;
   }
-  if (ignoreList.includes(attrData.attrName)) {
-    value = "";
-  } else if (typeof attrData.attrValue === "string" && !attrData.attrValue) {
-    value = "";
-  } else if (attrData.attrName === "style") {
-    const resultString = convertObjectToString(attrData.attrValue);
-    value = `${JSON.stringify(resultString)} `;
-  } else if (isIPublicTypeJSSlot(attrData.attrValue)) {
-    name = `[${attrData.attrName}]`;
+  if (attrData.attrName === "style") {
+    value = JSON.stringify(convertObjectToString(attrData.attrValue));
+    return [{ type: "NodeCodePieceAttr" /* ATTR */, name: attrData.attrName, value }];
+  }
+  if (isDirectiveProperty(attrData.attrValue)) {
+    return [{ type: "Directive" /* DIRECTIVE */, name: attrData.attrName, value: attrData.attrName }];
+  }
+  if (isIPublicTypeJSSlot(attrData.attrValue)) {
     const childrenParts = [];
     const attrValue = (_b = (_a = attrData.attrValue) == null ? void 0 : _a.value) != null ? _b : "";
     if (attrValue) {
@@ -11069,7 +11055,7 @@ function generateAttrValue(attrData, scope, config) {
             </ng-template>
             `;
             childrenParts.push({
-              type: import_lowcode_code_generator12.PIECE_TYPE.CHILDREN,
+              type: "NodeCodePieceChildren" /* CHILDREN */,
               value: childrenStr
             });
           }
@@ -11077,21 +11063,17 @@ function generateAttrValue(attrData, scope, config) {
       }
     }
     childrenParts.forEach((item) => {
-      item.type = import_lowcode_code_generator12.PIECE_TYPE.CHILDREN;
+      item.type = "NodeCodePieceChildren" /* CHILDREN */;
     });
     return childrenParts;
-  } else {
-    value = generateCompositeAjsType(attrData.attrValue, scope, {
-      handlers: config == null ? void 0 : config.handlers,
-      nodeGenerator: config == null ? void 0 : config.self
-    });
   }
+  value = generateCompositeAjsType(attrData.attrValue, scope, {
+    handlers: config == null ? void 0 : config.handlers,
+    nodeGenerator: config == null ? void 0 : config.self
+  });
   if (attrData.attrName === "content") {
-    type = import_lowcode_code_generator12.PIECE_TYPE.CHILDREN;
+    type = "NodeCodePieceChildren" /* CHILDREN */;
     value = value ? value.replace(/['"]/g, "") : "";
-  }
-  if (["span", "ngModel", "nzOptions", "pageInfo", "executeContext", "nzShowUploadList", "headers", "apiParams", "primaryKeys", "dataKeys", "fieldsForAdvancedSearch", "rowDataParams", "tabTitleList", "tabContentList", "nzPopconfirmPlacement", "nzTooltipIcon"].includes(attrData.attrName)) {
-    value = value ? value : "";
   }
   if (value === "" || value === "") {
     return [];
@@ -11101,45 +11083,19 @@ function generateAttrValue(attrData, scope, config) {
 function generateAttr(attrName, attrValue, scope, config) {
   let pieces;
   pieces = generateAttrValue({ attrName, attrValue }, scope, config);
-  pieces = pieces.map((p) => {
-    let newValue = "";
-    if (p.type === import_lowcode_code_generator12.PIECE_TYPE.AFTER) {
-      newValue = p.value;
-    } else if (p.type === import_lowcode_code_generator12.PIECE_TYPE.CHILDREN) {
-      newValue = p.value;
-    } else if (typeof p.value === "boolean" || p.name === "style") {
-      newValue = `${p.name}=${p.value}`;
-    } else if (p.value && isPureString(p.value)) {
-      const content = getStaticExprValue(p.value);
-      const newString = JSON.stringify(encodeJsxStringNode(content));
-      newValue = `${p.name}=${newString}`;
-    } else {
-      newValue = `${p.name}=${p.value}`;
-    }
-    return {
-      value: newValue,
-      type: p.type
-    };
-  });
-  return pieces;
+  return pieces.map((p) => processCodePiece(p));
 }
 function generateAttrs(nodeItem, scope, config) {
   const { props } = nodeItem;
   let pieces = [];
-  if (props) {
-    if (!Array.isArray(props)) {
-      Object.keys(props).forEach((propName) => {
-        if (isValidIdentifier(propName)) {
-          pieces = pieces.concat(generateAttr(propName, props[propName], scope, config));
-        }
-      });
-    } else {
-      props.forEach((prop) => {
-        if (prop.name && isValidIdentifier(prop.name) && !prop.spread) {
-          pieces = pieces.concat(generateAttr(prop.name, prop.value, scope, config));
-        }
-      });
-    }
+  if (props && !Array.isArray(props)) {
+    Object.keys(props).forEach((propName) => {
+      if (isValidIdentifier(propName)) {
+        pieces = pieces.concat(
+          generateAttr(propName, props[propName], scope, config)
+        );
+      }
+    });
   }
   return pieces;
 }
@@ -11149,7 +11105,7 @@ function generateBasicNode(nodeItem, scope, config) {
   const jsonString = JSON.stringify(tagObj);
   pieces.push({
     value: jsonString,
-    type: import_lowcode_code_generator12.PIECE_TYPE.TAG
+    type: "NodeCodePieceTag" /* TAG */
   });
   return pieces;
 }
@@ -11160,63 +11116,34 @@ function generateSimpleNode(nodeItem, scope, config) {
   if (nodeItem.children && (config == null ? void 0 : config.self)) {
     const childrenStr = config.self(nodeItem.children, scope);
     childrenParts.push({
-      type: import_lowcode_code_generator12.PIECE_TYPE.CHILDREN,
+      type: "NodeCodePieceChildren" /* CHILDREN */,
       value: childrenStr
     });
   }
   return [...basicParts, ...attrParts, ...childrenParts];
 }
 function linkPieces(pieces) {
-  const tagsPieces = pieces.filter((p) => p.type === import_lowcode_code_generator12.PIECE_TYPE.TAG);
+  const tagsPieces = pieces.filter((p) => p.type === "NodeCodePieceTag" /* TAG */);
   if (tagsPieces.length !== 1) {
     throw new import_lowcode_code_generator12.CodeGeneratorError("Only one tag definition required", tagsPieces);
   }
-  const childrenParts = pieces.filter((p) => p.type === import_lowcode_code_generator12.PIECE_TYPE.CHILDREN).map((p) => p.value).join("");
-  let attrsParts = pieces.filter((p) => p.type === import_lowcode_code_generator12.PIECE_TYPE.ATTR).map((p) => p.value).join(" ");
+  const childrenParts = pieces.filter((p) => p.type === "NodeCodePieceChildren" /* CHILDREN */).map((p) => p.value).join("");
+  let attrsParts = pieces.filter((p) => p.type === "NodeCodePieceAttr" /* ATTR */).map((p) => p.value).join(" ");
   attrsParts = attrsParts ? ` ${attrsParts}` : "";
-  const afterParts = pieces.filter((p) => p.type === import_lowcode_code_generator12.PIECE_TYPE.AFTER).map((p) => p.value).join("");
-  const { startTag, closeTag } = JSON.parse(tagsPieces[0].value);
-  if (startTag === "input bmInput" && attrsParts) {
-    return `<${startTag} ${attrsParts} />`;
+  const afterParts = pieces.filter((p) => p.type === "NodeCodePieceAfter" /* AFTER */).map((p) => p.value).join("");
+  const directiveParts = pieces.filter((p) => p.type === "Directive" /* DIRECTIVE */).map((p) => p.value).join(" ");
+  const { startTag, closeTag, isSelfClosingTag = false } = JSON.parse(tagsPieces[0].value);
+  if (isSelfClosingTag) {
+    return `<${startTag} ${directiveParts} ${attrsParts} />`;
   }
-  if (startTag === "input bmInput") {
-    return `<${startTag} />`;
-  }
-  let newString = `<${startTag} `;
-  if (attrsParts) {
-    newString += `${attrsParts}`;
-  }
-  newString += `>`;
-  if (childrenParts) {
-    newString += `
-        ${childrenParts}
-    `;
-  }
-  newString += `
-      </${closeTag}>
-  `;
-  if (afterParts) {
-    newString += `
-        ${afterParts}
-    `;
-  }
-  return newString;
+  return `<${startTag} ${directiveParts} ${attrsParts}>
+          ${childrenParts}
+          </${closeTag}>
+          ${afterParts}`;
 }
 function generateNodeSchema(nodeItem, scope, config) {
-  var _a;
   const pieces = [];
-  if ((_a = config == null ? void 0 : config.nodePlugins) == null ? void 0 : _a.length) {
-    const res = executeFunctionStack(
-      nodeItem,
-      scope,
-      config.nodePlugins,
-      generateSimpleNode,
-      config
-    );
-    pieces.push(...res);
-  } else {
-    pieces.push(...generateSimpleNode(nodeItem, scope, config));
-  }
+  pieces.push(...generateSimpleNode(nodeItem, scope, config));
   return linkPieces(pieces);
 }
 var handleChildren = (v) => v.join("");
@@ -11234,11 +11161,9 @@ function getStaticExprValue(expr) {
 function createAjsNodeGenerator(cfg = {}) {
   const generateNode = (nodeItem, scope) => {
     if (import_lodash2.default.isArray(nodeItem)) {
-      const resList = nodeItem.map(
-        (n) => {
-          return generateNode(n, scope);
-        }
-      );
+      const resList = nodeItem.map((n) => {
+        return generateNode(n, scope);
+      });
       return handleChildren(resList);
     }
     if ((0, import_lowcode_types.isNodeSchema)(nodeItem)) {
@@ -11258,12 +11183,8 @@ function createAjsNodeGenerator(cfg = {}) {
   };
   return (nodeItem, scope) => unwrapJsExprQuoteInJsx(generateNode(nodeItem, scope));
 }
-var defaultAngularGeneratorConfig = {
-  nodePlugins: []
-};
 function createAngularNodeGenerator(cfg) {
-  const newCfg = mergeNodeGeneratorConfig(defaultAngularGeneratorConfig, cfg);
-  return createAjsNodeGenerator(newCfg);
+  return createAjsNodeGenerator(cfg);
 }
 
 // src/solutions/plugins/ajsHtml.ts
@@ -11296,7 +11217,7 @@ var pluginFactory2 = (config) => {
     InputSearch: { startTag: "bm-input-search", closeTag: "bm-input-search" },
     InputNumber: { startTag: "bm-input-number", closeTag: "bm-input-number" },
     InputPercent: { startTag: "bm-input-percent", closeTag: "bm-input-percent" },
-    Input: { startTag: "input bmInput", closeTag: "" },
+    Input: { startTag: "input bmInput", closeTag: "", isSelfClosingTag: true },
     RadioGroup: { startTag: "bm-radio-group", closeTag: "bm-radio-group" },
     RadioButton: { startTag: "label bm-radio-button", closeTag: "label" },
     Radio: { startTag: "label bm-radio", closeTag: "label" },
