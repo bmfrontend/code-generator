@@ -71,15 +71,15 @@ var require_lib = __commonJS({
       COMMON_SUB_MODULE_NAME: () => COMMON_SUB_MODULE_NAME2,
       CONTAINER_TYPE: () => CONTAINER_TYPE2,
       ChunkBuilder: () => ChunkBuilder2,
-      ChunkType: () => ChunkType11,
+      ChunkType: () => ChunkType14,
       CodeBuilder: () => CodeBuilder2,
       CodeGeneratorError: () => CodeGeneratorError7,
       CompatibilityError: () => CompatibilityError2,
       ComponentValidationError: () => ComponentValidationError,
-      DEFAULT_LINK_AFTER: () => DEFAULT_LINK_AFTER3,
+      DEFAULT_LINK_AFTER: () => DEFAULT_LINK_AFTER5,
       DependencyType: () => DependencyType2,
       FILE_TYPE_FAMILY: () => FILE_TYPE_FAMILY2,
-      FileType: () => FileType11,
+      FileType: () => FileType14,
       InternalDependencyType: () => InternalDependencyType2,
       NATIVE_ELE_PKG: () => NATIVE_ELE_PKG2,
       PIECE_TYPE: () => PIECE_TYPE,
@@ -97,7 +97,7 @@ var require_lib = __commonJS({
     });
     module2.exports = __toCommonJS2(src_exports);
     var import_change_case22 = __toESM2(require("change-case"));
-    var FileType11 = /* @__PURE__ */ ((FileType22) => {
+    var FileType14 = /* @__PURE__ */ ((FileType22) => {
       FileType22["CSS"] = "css";
       FileType22["SCSS"] = "scss";
       FileType22["LESS"] = "less";
@@ -111,13 +111,13 @@ var require_lib = __commonJS({
       FileType22["JSON"] = "json";
       FileType22["MD"] = "md";
       return FileType22;
-    })(FileType11 || {});
-    var ChunkType11 = /* @__PURE__ */ ((ChunkType22) => {
+    })(FileType14 || {});
+    var ChunkType14 = /* @__PURE__ */ ((ChunkType22) => {
       ChunkType22["AST"] = "ast";
       ChunkType22["STRING"] = "string";
       ChunkType22["JSON"] = "json";
       return ChunkType22;
-    })(ChunkType11 || {});
+    })(ChunkType14 || {});
     var PluginType = /* @__PURE__ */ ((PluginType2) => {
       PluginType2["COMPONENT"] = "component";
       PluginType2["UTILS"] = "utils";
@@ -166,7 +166,7 @@ var require_lib = __commonJS({
       COMMON_CHUNK_NAME: () => COMMON_CHUNK_NAME2,
       COMMON_SUB_MODULE_NAME: () => COMMON_SUB_MODULE_NAME2,
       CONTAINER_TYPE: () => CONTAINER_TYPE2,
-      DEFAULT_LINK_AFTER: () => DEFAULT_LINK_AFTER3,
+      DEFAULT_LINK_AFTER: () => DEFAULT_LINK_AFTER5,
       FILE_TYPE_FAMILY: () => FILE_TYPE_FAMILY2,
       NATIVE_ELE_PKG: () => NATIVE_ELE_PKG2,
       SUPPORT_SCHEMA_VERSION_LIST: () => SUPPORT_SCHEMA_VERSION_LIST2,
@@ -199,7 +199,7 @@ var require_lib = __commonJS({
       InsPrivateMethod: "CommonClassDefineInsPrivateMethod",
       End: "CommonClassDefineEnd"
     };
-    var DEFAULT_LINK_AFTER3 = {
+    var DEFAULT_LINK_AFTER5 = {
       [COMMON_CHUNK_NAME2.ExternalDepsImport]: [],
       [COMMON_CHUNK_NAME2.InternalDepsImport]: [COMMON_CHUNK_NAME2.ExternalDepsImport],
       [COMMON_CHUNK_NAME2.ImportAliasDefine]: [
@@ -350,7 +350,7 @@ var require_lib = __commonJS({
       isValidContainerType: () => isValidContainerType2
     });
     var _3 = __toESM2(require("lodash"));
-    var import_lowcode_types2 = require("@alilc/lowcode-types");
+    var import_lowcode_types3 = require("@alilc/lowcode-types");
     var common_exports = {};
     __export2(common_exports, {
       camel2dash: () => camel2dash,
@@ -359,7 +359,7 @@ var require_lib = __commonJS({
       getStaticExprValue: () => getStaticExprValue2,
       isExternalDependency: () => isExternalDependency,
       isInternalDependency: () => isInternalDependency,
-      isJSExpressionFn: () => isJSExpressionFn,
+      isJSExpressionFn: () => isJSExpressionFn2,
       uniqueArray: () => uniqueArray2,
       upperCaseFirst: () => upperCaseFirst
     });
@@ -389,7 +389,7 @@ var require_lib = __commonJS({
     function getStaticExprValue2(expr) {
       return Function(`"use strict";return (${expr})`)();
     }
-    function isJSExpressionFn(data) {
+    function isJSExpressionFn2(data) {
       return (data == null ? void 0 : data.type) === "JSExpression" && (data == null ? void 0 : data.extType) === "function";
     }
     function isInternalDependency(dependency) {
@@ -427,15 +427,15 @@ var require_lib = __commonJS({
       const childrenRes = [];
       if (children === null || children === void 0) {
         return [];
-      } else if ((0, import_lowcode_types2.isDOMText)(children)) {
+      } else if ((0, import_lowcode_types3.isDOMText)(children)) {
         const handler = handlers.string || noop;
         result = handler(children);
-      } else if ((0, import_lowcode_types2.isJSExpression)(children)) {
+      } else if ((0, import_lowcode_types3.isJSExpression)(children)) {
         const handler = handlers.expression || noop;
         result = handler(children);
-      } else if ((0, import_lowcode_types2.isJSSlot)(children)) {
+      } else if ((0, import_lowcode_types3.isJSSlot)(children)) {
         return handleSubNodes2(children.value, handlers, { ...opt, maxDepth: maxDepth - 1 });
-      } else if ((0, import_lowcode_types2.isNodeSchema)(children)) {
+      } else if ((0, import_lowcode_types3.isNodeSchema)(children)) {
         const handler = handlers.node || noop;
         const child = children;
         result = handler(child);
@@ -464,13 +464,13 @@ var require_lib = __commonJS({
       }
       return childrenRes;
       function handleCompositeValueInProps(value) {
-        if ((0, import_lowcode_types2.isJSSlot)(value)) {
+        if ((0, import_lowcode_types3.isJSSlot)(value)) {
           return handleSubNodes2(value.value, handlers, { ...opt, maxDepth: maxDepth - 1 });
         }
         if (Array.isArray(value)) {
           return _3.flatMap(value, (v) => handleCompositeValueInProps(v));
         }
-        if (!(0, import_lowcode_types2.isJSExpression)(value) && !isJSExpressionFn(value) && !(0, import_lowcode_types2.isJSFunction)(value) && typeof value === "object" && value !== null) {
+        if (!(0, import_lowcode_types3.isJSExpression)(value) && !isJSExpressionFn2(value) && !(0, import_lowcode_types3.isJSFunction)(value) && typeof value === "object" && value !== null) {
           return _3.flatMap(Object.values(value), (v) => handleCompositeValueInProps(v));
         }
         return [];
@@ -519,16 +519,16 @@ var require_lib = __commonJS({
     __export2(validate_exports, {
       ensureValidClassName: () => ensureValidClassName3,
       isValidComponentName: () => isValidComponentName,
-      isValidIdentifier: () => isValidIdentifier2
+      isValidIdentifier: () => isValidIdentifier3
     });
-    var isValidIdentifier2 = (name) => {
+    var isValidIdentifier3 = (name) => {
       return /^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*$/.test(name);
     };
     var isValidComponentName = (name) => {
       return /^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF.]*$/.test(name);
     };
     var ensureValidClassName3 = (name) => {
-      if (!isValidIdentifier2(name)) {
+      if (!isValidIdentifier3(name)) {
         return `$${name.replace(/[^_$a-zA-Z0-9]/g, "")}`;
       }
       return name;
@@ -1741,10 +1741,10 @@ var require_lib = __commonJS({
       });
       depsInfo.forEach((info) => {
         const name = info.aliasName || info.exportName;
-        if (!isValidIdentifier2(name)) {
+        if (!isValidIdentifier3(name)) {
           throw new CodeGeneratorError7(`Invalid Identifier [${name}]`);
         }
-        if (info.nodeIdentifier && !isValidIdentifier2(info.nodeIdentifier)) {
+        if (info.nodeIdentifier && !isValidIdentifier3(info.nodeIdentifier)) {
           throw new CodeGeneratorError7(`Invalid Identifier [${info.nodeIdentifier}]`);
         }
       });
@@ -1899,7 +1899,7 @@ var require_lib = __commonJS({
       }
       return chunks;
     }
-    var pluginFactory10 = (config) => {
+    var pluginFactory13 = (config) => {
       const cfg = {
         fileType: "js",
         useAliasName: true,
@@ -1922,7 +1922,7 @@ var require_lib = __commonJS({
       };
       return plugin;
     };
-    var esmodule_default = pluginFactory10;
+    var esmodule_default = pluginFactory13;
     var import_change_case32 = __toESM2(require("change-case"));
     var pluginFactory22 = () => {
       const plugin = async (pre) => {
@@ -2020,7 +2020,7 @@ var require_lib = __commonJS({
           name: CLASS_DEFINE_CHUNK_NAME2.End,
           content: "}",
           linkAfter: [
-            ...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.End],
+            ...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.End],
             REACT_CHUNK_NAME.ClassRenderEnd,
             REACT_CHUNK_NAME.ClassDidMountEnd
           ]
@@ -2030,21 +2030,21 @@ var require_lib = __commonJS({
           fileType: "jsx",
           name: CLASS_DEFINE_CHUNK_NAME2.ConstructorStart,
           content: "constructor(props, context) { super(props); ",
-          linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorStart]]
+          linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorStart]]
         });
         next.chunks.push({
           type: "string",
           fileType: "jsx",
           name: CLASS_DEFINE_CHUNK_NAME2.ConstructorEnd,
           content: "}",
-          linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorEnd]]
+          linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorEnd]]
         });
         next.chunks.push({
           type: "string",
           fileType: "jsx",
           name: REACT_CHUNK_NAME.ClassDidMountStart,
           content: "componentDidMount() {",
-          linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.End]]
+          linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.End]]
         });
         next.chunks.push({
           type: "string",
@@ -2059,7 +2059,7 @@ var require_lib = __commonJS({
           name: REACT_CHUNK_NAME.ClassRenderStart,
           content: "render() {",
           linkAfter: [
-            ...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.End],
+            ...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.End],
             REACT_CHUNK_NAME.ClassDidMountEnd
           ]
         });
@@ -2102,7 +2102,7 @@ var require_lib = __commonJS({
     var jsExpression_exports = {};
     __export2(jsExpression_exports, {
       generateExpression: () => generateExpression,
-      generateFunction: () => generateFunction,
+      generateFunction: () => generateFunction3,
       isBroadJSFunction: () => isBroadJSFunction
     });
     var parser2 = __toESM2(require("@babel/parser"));
@@ -2516,7 +2516,7 @@ var require_lib = __commonJS({
       throw new Error("Can not find Function Statement");
     }
     function isBroadJSFunction(value) {
-      return isJSExpressionFn(value) || (0, import_lowcode_types22.isJSFunction)(value);
+      return isJSExpressionFn2(value) || (0, import_lowcode_types22.isJSFunction)(value);
     }
     function generateExpression(value, scope) {
       if ((0, import_lowcode_types22.isJSExpression)(value)) {
@@ -2532,7 +2532,7 @@ var require_lib = __commonJS({
     function getFunctionSource(cfg) {
       return cfg.source || cfg.value || cfg.compiled;
     }
-    function generateFunction(value, config = {
+    function generateFunction3(value, config = {
       name: void 0,
       isMember: false,
       isBlock: false,
@@ -2565,7 +2565,7 @@ var require_lib = __commonJS({
     __export2(jsSlot_exports, {
       generateJsSlot: () => generateJsSlot
     });
-    var import_lowcode_types3 = require("@alilc/lowcode-types");
+    var import_lowcode_types32 = require("@alilc/lowcode-types");
     function unwrapJsExprQuoteInJsx2(jsxExpr) {
       if (jsxExpr.length >= 2 && jsxExpr[0] === "{" && jsxExpr[jsxExpr.length - 1] === "}") {
         return jsxExpr.slice(1, jsxExpr.length - 1);
@@ -2576,7 +2576,7 @@ var require_lib = __commonJS({
       return `/* ${commentText.split("\n").join(" ").replace(/\*\//g, "*-/")}*/`;
     }
     function generateJsSlot(slot, scope, generator) {
-      if ((0, import_lowcode_types3.isJSSlot)(slot)) {
+      if ((0, import_lowcode_types32.isJSSlot)(slot)) {
         const { title, params, value } = slot;
         const slotScope = params ? scope.createSubScope(params || []) : scope;
         const contentExpr = !value ? "null" : generateNodeDataOrArrayForJsSlot(value, generator, slotScope);
@@ -2671,9 +2671,9 @@ ${value.map((v) => {
     function genFunction(value) {
       const globalVars = parseExpressionGetKeywords(value.value);
       if (globalVars.includes("arguments")) {
-        return generateFunction(value, { isBindExpr: true });
+        return generateFunction3(value, { isBindExpr: true });
       }
-      return generateFunction(value, { isArrow: true });
+      return generateFunction3(value, { isArrow: true });
     }
     function genJsSlot(value, scope, options = {}) {
       if (options.nodeGenerator) {
@@ -2724,7 +2724,7 @@ ${value.map((v) => {
         }
         return generateExpression(value, scope);
       }
-      if ((0, import_lowcode_types4.isJSFunction)(value) || isJSExpressionFn(value)) {
+      if ((0, import_lowcode_types4.isJSFunction)(value) || isJSExpressionFn2(value)) {
         if ((_d = options.handlers) == null ? void 0 : _d.function) {
           return executeFunctionStack(value, scope, options.handlers.function, genFunction, options);
         }
@@ -2855,7 +2855,7 @@ ${value.map((v) => {
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.ConstructorContent,
             content: `this.state = { ${fields.join("")} };`,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
           });
         } else if (cfg.implementType === "insMember") {
           next.chunks.push({
@@ -2863,7 +2863,7 @@ ${value.map((v) => {
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.InsVar,
             content: `state = { ${fields.join("")} };`,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
           });
         }
         return next;
@@ -2928,7 +2928,7 @@ ${value.map((v) => {
             return context;
           }
         `,
-            linkAfter: DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsPrivateMethod]
+            linkAfter: DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsPrivateMethod]
           });
         }
         return next;
@@ -3003,7 +3003,7 @@ ${value.map((v) => {
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.InsVar,
             content: "utils = utils;",
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
           });
         } else {
           next.chunks.push({
@@ -3020,7 +3020,7 @@ ${value.map((v) => {
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.ConstructorContent,
             content: "this._refsManager = new RefsManager();",
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
           });
           next.chunks.push({
             type: "string",
@@ -3031,7 +3031,7 @@ ${value.map((v) => {
             return this._refsManager.get(refName);
           }
         `,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
           });
           next.chunks.push({
             type: "string",
@@ -3042,7 +3042,7 @@ ${value.map((v) => {
             return this._refsManager.getAll(refName);
           }
         `,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
           });
         } else {
           next.chunks.push({
@@ -3050,14 +3050,14 @@ ${value.map((v) => {
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.InsMethod,
             content: " $ = () => null; ",
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
           });
           next.chunks.push({
             type: "string",
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.InsMethod,
             content: " $$ = () => [];        ",
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
           });
         }
         return next;
@@ -3135,7 +3135,7 @@ ${value.map((v) => {
           }
 
           `,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
           });
           next.chunks.unshift({
             type: "string",
@@ -3174,7 +3174,7 @@ ${value.map((v) => {
             )});
   }
         `,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
           });
         }
         return next;
@@ -3183,7 +3183,7 @@ ${value.map((v) => {
     };
     var containerInjectDataSourceEngine_default = pluginFactory72;
     function wrapAsFunction(value, scope) {
-      if ((0, import_lowcode_types5.isJSExpression)(value) || (0, import_lowcode_types5.isJSFunction)(value) || isJSExpressionFn(value)) {
+      if ((0, import_lowcode_types5.isJSExpression)(value) || (0, import_lowcode_types5.isJSFunction)(value) || isJSExpressionFn2(value)) {
         return {
           type: "JSExpression",
           value: `function(){ return ((${value.value}))}.bind(this)`
@@ -3219,7 +3219,7 @@ ${value.map((v) => {
           return __$$constants || {};
         }
         `,
-          linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
+          linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
         });
         return next;
       };
@@ -3251,7 +3251,7 @@ ${value.map((v) => {
           content: `
         __$$i18n._inject2(this);
       `,
-          linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
+          linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
         });
         return next;
       };
@@ -3275,7 +3275,7 @@ ${value.map((v) => {
           const { lifeCycles } = ir;
           const chunks = Object.keys(lifeCycles).map((lifeCycleName) => {
             var _a;
-            if (!(0, import_lowcode_types6.isJSFunction)(lifeCycles[lifeCycleName]) && !isJSExpressionFn(lifeCycles[lifeCycleName]) && !(0, import_lowcode_types6.isJSExpression)(lifeCycles[lifeCycleName])) {
+            if (!(0, import_lowcode_types6.isJSFunction)(lifeCycles[lifeCycleName]) && !isJSExpressionFn2(lifeCycles[lifeCycleName]) && !(0, import_lowcode_types6.isJSExpression)(lifeCycles[lifeCycleName])) {
               return null;
             }
             let normalizeName;
@@ -3293,8 +3293,8 @@ ${value.map((v) => {
                 type: "string",
                 fileType: cfg.fileType,
                 name: CLASS_DEFINE_CHUNK_NAME2.ConstructorContent,
-                content: generateFunction(lifeCycles[lifeCycleName], { isBlock: true }),
-                linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorStart]]
+                content: generateFunction3(lifeCycles[lifeCycleName], { isBlock: true }),
+                linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorStart]]
               };
             }
             if (normalizeName === "componentDidMount") {
@@ -3302,7 +3302,7 @@ ${value.map((v) => {
                 type: "string",
                 fileType: cfg.fileType,
                 name: REACT_CHUNK_NAME.ClassDidMountContent,
-                content: generateFunction(lifeCycles[lifeCycleName], { isBlock: true }),
+                content: generateFunction3(lifeCycles[lifeCycleName], { isBlock: true }),
                 linkAfter: [REACT_CHUNK_NAME.ClassDidMountStart]
               };
             }
@@ -3311,7 +3311,7 @@ ${value.map((v) => {
                 type: "string",
                 fileType: cfg.fileType,
                 name: REACT_CHUNK_NAME.ClassRenderPre,
-                content: generateFunction(lifeCycles[lifeCycleName], { isBlock: true }),
+                content: generateFunction3(lifeCycles[lifeCycleName], { isBlock: true }),
                 linkAfter: [REACT_CHUNK_NAME.ClassRenderStart]
               };
             }
@@ -3319,11 +3319,11 @@ ${value.map((v) => {
               type: "string",
               fileType: cfg.fileType,
               name: CLASS_DEFINE_CHUNK_NAME2.InsMethod,
-              content: generateFunction(lifeCycles[lifeCycleName], {
+              content: generateFunction3(lifeCycles[lifeCycleName], {
                 name: exportName,
                 isMember: true
               }),
-              linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
+              linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
             };
           }).filter((i) => !!i);
           next.chunks.push(...chunks.filter((x) => x !== null));
@@ -3333,7 +3333,7 @@ ${value.map((v) => {
       return plugin;
     };
     var containerLifeCycle_default = pluginFactory102;
-    var pluginFactory11 = (config) => {
+    var pluginFactory112 = (config) => {
       const cfg = {
         fileType: "jsx",
         ...config
@@ -3352,8 +3352,8 @@ ${value.map((v) => {
           type: "string",
           fileType: cfg.fileType,
           name: CLASS_DEFINE_CHUNK_NAME2.InsMethod,
-          content: generateFunction(methods[methodName], { name: methodName, isMember: true }),
-          linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
+          content: generateFunction3(methods[methodName], { name: methodName, isMember: true }),
+          linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsMethod]]
         }));
         next.chunks.push(...chunks);
         if (inStrictMode) {
@@ -3362,16 +3362,16 @@ ${value.map((v) => {
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.ConstructorContent,
             content: Object.keys(ir.methods).map(
-              (methodName) => isValidIdentifier2(methodName) ? `.${methodName}` : `[${JSON.stringify(methodName)}]`
+              (methodName) => isValidIdentifier3(methodName) ? `.${methodName}` : `[${JSON.stringify(methodName)}]`
             ).map((method) => `this._context${method} = this${method};`).join("\n"),
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
           });
         }
         return next;
       };
       return plugin;
     };
-    var containerMethod_default = pluginFactory11;
+    var containerMethod_default = pluginFactory112;
     var nodeToJSX_exports = {};
     __export2(nodeToJSX_exports, {
       createNodeGenerator: () => createNodeGenerator,
@@ -3479,13 +3479,13 @@ ${value.map((v) => {
       if (props) {
         if (!Array.isArray(props)) {
           Object.keys(props).forEach((propName) => {
-            if (isValidIdentifier2(propName)) {
+            if (isValidIdentifier3(propName)) {
               pieces = pieces.concat(generateAttr2(propName, props[propName], scope, config));
             }
           });
         } else {
           props.forEach((prop) => {
-            if (prop.name && isValidIdentifier2(prop.name) && !prop.spread) {
+            if (prop.name && isValidIdentifier3(prop.name) && !prop.spread) {
               pieces = pieces.concat(generateAttr2(prop.name, prop.value, scope, config));
             }
           });
@@ -3684,7 +3684,7 @@ ${value.map((v) => {
         ignoreRootScope: dontTransformThis2ContextAtRootScope
       })}))`;
     }
-    var pluginFactory12 = (config) => {
+    var pluginFactory122 = (config) => {
       const cfg = {
         fileType: "jsx",
         nodeTypeMapping: {},
@@ -3790,8 +3790,8 @@ ${value.map((v) => {
       };
       return plugin;
     };
-    var jsx_default = pluginFactory12;
-    var pluginFactory13 = () => {
+    var jsx_default = pluginFactory122;
+    var pluginFactory132 = () => {
       const plugin = async (pre) => {
         const next = {
           ...pre
@@ -3810,7 +3810,7 @@ import React from 'react';`,
       };
       return plugin;
     };
-    var reactCommonDeps_default = pluginFactory13;
+    var reactCommonDeps_default = pluginFactory132;
     var pluginFactory14 = (config) => {
       const cfg = {
         fileType: "css",
@@ -4063,7 +4063,7 @@ import React from 'react';`,
           }
         }
       `,
-          linkAfter: [...DEFAULT_LINK_AFTER3[COMMON_CHUNK_NAME2.FileUtilDefine]]
+          linkAfter: [...DEFAULT_LINK_AFTER5[COMMON_CHUNK_NAME2.FileUtilDefine]]
         });
         if (ir.utils) {
           next.chunks.push({
@@ -6144,14 +6144,14 @@ export default defineConfig(() => ({
           fileType: "jsx",
           name: CLASS_DEFINE_CHUNK_NAME2.ConstructorStart,
           content: "constructor(props, context) { super(props); ",
-          linkAfter: DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorStart]
+          linkAfter: DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorStart]
         });
         next.chunks.push({
           type: "string",
           fileType: "jsx",
           name: CLASS_DEFINE_CHUNK_NAME2.ConstructorEnd,
           content: "} /* end of constructor */",
-          linkAfter: DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorEnd]
+          linkAfter: DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorEnd]
         });
         next.chunks.push({
           type: "string",
@@ -6252,7 +6252,7 @@ export default defineConfig(() => ({
         const { lifeCycles } = ir;
         if (lifeCycles && !import_lodash5.default.isEmpty(lifeCycles)) {
           Object.entries(lifeCycles).forEach(([lifeCycleName, lifeCycleMethodExpr]) => {
-            if (!(0, import_lowcode_types8.isJSFunction)(lifeCycles[lifeCycleName]) && !isJSExpressionFn(lifeCycles[lifeCycleName]) && !(0, import_lowcode_types8.isJSExpression)(lifeCycles[lifeCycleName])) {
+            if (!(0, import_lowcode_types8.isJSFunction)(lifeCycles[lifeCycleName]) && !isJSExpressionFn2(lifeCycles[lifeCycleName]) && !(0, import_lowcode_types8.isJSExpression)(lifeCycles[lifeCycleName])) {
               return;
             }
             const normalizeName = normalizeNameMapping.get(lifeCycleName) || lifeCycleName;
@@ -6418,7 +6418,7 @@ export default defineConfig(() => ({
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.ConstructorContent,
             content: `this.state = { ${fields.join(",")} };`,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
           });
         } else if (cfg.implementType === "insMember") {
           next.chunks.push({
@@ -6426,7 +6426,7 @@ export default defineConfig(() => ({
             fileType: cfg.fileType,
             name: CLASS_DEFINE_CHUNK_NAME2.InsVar,
             content: `state = { ${fields.join(",")} };`,
-            linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
+            linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.InsVar]]
           });
         }
         return next;
@@ -6467,7 +6467,7 @@ export default defineConfig(() => ({
           content: `
         __$$i18n._inject2(this);
       `,
-          linkAfter: [...DEFAULT_LINK_AFTER3[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
+          linkAfter: [...DEFAULT_LINK_AFTER5[CLASS_DEFINE_CHUNK_NAME2.ConstructorContent]]
         });
         next.chunks.push({
           type: "string",
@@ -7578,7 +7578,7 @@ body {
         REACT_CHUNK_NAME
       },
       defaultLinkAfter: {
-        COMMON_DEFAULT_LINK_AFTER: DEFAULT_LINK_AFTER3
+        COMMON_DEFAULT_LINK_AFTER: DEFAULT_LINK_AFTER5
       },
       constants: const_exports2
     };
@@ -7623,7 +7623,7 @@ function getErrorMessage(error) {
 }
 
 // src/cli/run.ts
-var import_lowcode_code_generator23 = __toESM(require_lib());
+var import_lowcode_code_generator26 = __toESM(require_lib());
 
 // src/generator/ProjectBuilder.ts
 var import_lowcode_code_generator7 = __toESM(require_lib());
@@ -11391,7 +11391,7 @@ var pluginFactory5 = () => {
       fileType: import_lowcode_code_generator17.FileType.TS,
       name: COMMON_CHUNK_NAME.ExternalDepsImport,
       content: `
-       import { Component, OnInit } from '@angular/core';
+       import { Component, OnInit ,OnDestroy} from '@angular/core';
       `,
       linkAfter: []
     });
@@ -11651,16 +11651,19 @@ var ajsPacJson_default = pluginFactory7;
 
 // src/solutions/plugins/ajsContentClass.ts
 var import_change_case3 = __toESM(require("change-case"));
+var import_lowcode_code_generator21 = __toESM(require_lib());
 
 // src/solutions/plugins/const.ts
 var ANGULAR_CHUNK_NAME = {
-  ClassOnInitStart: "ReactComponentClassOnIniStart",
-  ClassOnInitEnd: "ReactComponentClassOnIniEnd",
-  ClassOnInitContent: "ReactComponentClassOnIniContent"
+  ClassOnInitStart: "ReactComponentClassOnInitStart",
+  ClassOnInitEnd: "ReactComponentClassOnInitEnd",
+  ClassOnInitContent: "ReactComponentClassOnInitContent",
+  ClassOnDestroyStart: "ReactComponentClassOnDestroyStart",
+  ClassOnDestroyContent: "ReactComponentClassOnDestroyContent",
+  ClassOnDestroyEnd: "ReactComponentClassOnDestroyEnd"
 };
 
 // src/solutions/plugins/ajsContentClass.ts
-var import_lowcode_code_generator21 = __toESM(require_lib());
 var { ensureValidClassName: ensureValidClassName2 } = import_lowcode_code_generator21.default.utils.validate;
 var pluginFactory8 = () => {
   const plugin = async (pre) => {
@@ -11681,26 +11684,20 @@ var pluginFactory8 = () => {
             templateUrl: './${ir.fileName}.component.html',
             styleUrls: ['./${ir.fileName}.component.less'],
           })
-          export class ${componentClassName}Component  implements OnInit {
+          export class ${componentClassName}Component implements OnInit ,OnDestroy {
       `,
       linkAfter: [
-        COMMON_CHUNK_NAME.ExternalDepsImport,
-        COMMON_CHUNK_NAME.InternalDepsImport,
-        COMMON_CHUNK_NAME.FileVarDefine,
-        COMMON_CHUNK_NAME.FileUtilDefine
+        COMMON_CHUNK_NAME.ExternalDepsImport
       ]
     });
     next.chunks.push({
       type: import_lowcode_code_generator21.ChunkType.STRING,
       fileType: import_lowcode_code_generator21.FileType.TS,
       name: CLASS_DEFINE_CHUNK_NAME.ConstructorStart,
-      content: "constructor() { ; ",
+      content: "constructor() {  ",
       linkAfter: [
         CLASS_DEFINE_CHUNK_NAME.Start,
-        CLASS_DEFINE_CHUNK_NAME.StaticVar,
-        CLASS_DEFINE_CHUNK_NAME.StaticMethod,
-        CLASS_DEFINE_CHUNK_NAME.InsVar,
-        CLASS_DEFINE_CHUNK_NAME.InsVarMethod
+        CLASS_DEFINE_CHUNK_NAME.InsVar
       ]
     });
     next.chunks.push({
@@ -11719,12 +11716,6 @@ var pluginFactory8 = () => {
       name: ANGULAR_CHUNK_NAME.ClassOnInitStart,
       content: "ngOnInit() {",
       linkAfter: [
-        CLASS_DEFINE_CHUNK_NAME.Start,
-        CLASS_DEFINE_CHUNK_NAME.StaticVar,
-        CLASS_DEFINE_CHUNK_NAME.StaticMethod,
-        CLASS_DEFINE_CHUNK_NAME.InsVar,
-        CLASS_DEFINE_CHUNK_NAME.InsVarMethod,
-        CLASS_DEFINE_CHUNK_NAME.InsMethod,
         CLASS_DEFINE_CHUNK_NAME.ConstructorEnd
       ]
     });
@@ -11734,8 +11725,28 @@ var pluginFactory8 = () => {
       name: ANGULAR_CHUNK_NAME.ClassOnInitEnd,
       content: "}",
       linkAfter: [
+        ANGULAR_CHUNK_NAME.ClassOnInitStart,
+        ANGULAR_CHUNK_NAME.ClassOnInitContent
+      ]
+    });
+    next.chunks.push({
+      type: import_lowcode_code_generator21.ChunkType.STRING,
+      fileType: import_lowcode_code_generator21.FileType.TS,
+      name: ANGULAR_CHUNK_NAME.ClassOnDestroyStart,
+      content: "ngOnDestroy() {",
+      linkAfter: [
         ANGULAR_CHUNK_NAME.ClassOnInitContent,
-        ANGULAR_CHUNK_NAME.ClassOnInitStart
+        ANGULAR_CHUNK_NAME.ClassOnInitEnd
+      ]
+    });
+    next.chunks.push({
+      type: import_lowcode_code_generator21.ChunkType.STRING,
+      fileType: import_lowcode_code_generator21.FileType.TS,
+      name: ANGULAR_CHUNK_NAME.ClassOnDestroyEnd,
+      content: "}",
+      linkAfter: [
+        ANGULAR_CHUNK_NAME.ClassOnDestroyContent,
+        ANGULAR_CHUNK_NAME.ClassOnDestroyStart
       ]
     });
     next.chunks.push({
@@ -11744,14 +11755,8 @@ var pluginFactory8 = () => {
       name: CLASS_DEFINE_CHUNK_NAME.End,
       content: "}",
       linkAfter: [
-        CLASS_DEFINE_CHUNK_NAME.Start,
-        CLASS_DEFINE_CHUNK_NAME.StaticVar,
-        CLASS_DEFINE_CHUNK_NAME.StaticMethod,
-        CLASS_DEFINE_CHUNK_NAME.InsVar,
-        CLASS_DEFINE_CHUNK_NAME.InsVarMethod,
-        CLASS_DEFINE_CHUNK_NAME.InsMethod,
-        CLASS_DEFINE_CHUNK_NAME.ConstructorEnd,
-        ANGULAR_CHUNK_NAME.ClassOnInitEnd
+        ANGULAR_CHUNK_NAME.ClassOnDestroyEnd,
+        CLASS_DEFINE_CHUNK_NAME.InsMethod
       ]
     });
     return next;
@@ -11967,6 +11972,167 @@ var pluginFactory9 = () => {
 };
 var ajsPageModule_default = pluginFactory9;
 
+// src/solutions/plugins/ajsContainerInitState.ts
+var import_lowcode_code_generator23 = __toESM(require_lib());
+var pluginFactory10 = (config) => {
+  const cfg = {
+    fileType: import_lowcode_code_generator23.FileType.TS,
+    implementType: "insMember",
+    ...config
+  };
+  const plugin = async (pre) => {
+    const next = {
+      ...pre
+    };
+    const ir = next.ir;
+    const state = ir.state || {};
+    const fields = Object.keys(state).map((stateName) => {
+      const value = state[stateName];
+      if (!value || value.type === "JSDeclaration") {
+        return `${stateName};`;
+      }
+      if (value.type === "JSExpression") {
+        return `${stateName} = ${value.value};`;
+      }
+      return `${stateName};`;
+    }).filter(Boolean).join(" ");
+    next.chunks.push({
+      type: import_lowcode_code_generator23.ChunkType.STRING,
+      fileType: cfg.fileType,
+      name: CLASS_DEFINE_CHUNK_NAME.InsVar,
+      content: fields,
+      linkAfter: [
+        CLASS_DEFINE_CHUNK_NAME.Start
+      ]
+    });
+    return next;
+  };
+  return plugin;
+};
+var ajsContainerInitState_default = pluginFactory10;
+
+// src/solutions/plugins/ajsContainerLifeCycle.ts
+var import_lowcode_code_generator24 = __toESM(require_lib());
+var import_lowcode_types2 = require("@alilc/lowcode-types");
+var { generateFunction } = import_lowcode_code_generator24.default.utils.jsExpression;
+var { isJSExpressionFn } = import_lowcode_code_generator24.default.utils.common;
+var pluginFactory11 = (config) => {
+  const cfg = {
+    fileType: import_lowcode_code_generator24.FileType.TS,
+    exportNameMapping: {},
+    normalizeNameMapping: {},
+    ...config
+  };
+  const plugin = async (pre) => {
+    const next = {
+      ...pre
+    };
+    const ir = next.ir;
+    if (ir.lifeCycles) {
+      const { lifeCycles } = ir;
+      const chunks = Object.keys(lifeCycles).map((lifeCycleName) => {
+        var _a;
+        if (!(0, import_lowcode_types2.isJSFunction)(lifeCycles[lifeCycleName]) && !isJSExpressionFn(lifeCycles[lifeCycleName]) && !(0, import_lowcode_types2.isJSExpression)(lifeCycles[lifeCycleName])) {
+          return null;
+        }
+        let normalizeName;
+        if (lifeCycleName === "constructor") {
+          normalizeName = lifeCycleName;
+        } else {
+          normalizeName = cfg.normalizeNameMapping[lifeCycleName] || lifeCycleName;
+        }
+        if ((_a = cfg == null ? void 0 : cfg.exclude) == null ? void 0 : _a.includes(normalizeName)) {
+          return null;
+        }
+        const exportName = cfg.exportNameMapping[lifeCycleName] || lifeCycleName;
+        if (normalizeName === "constructor") {
+          return {
+            type: import_lowcode_code_generator24.ChunkType.STRING,
+            fileType: cfg.fileType,
+            name: CLASS_DEFINE_CHUNK_NAME.ConstructorContent,
+            content: generateFunction(lifeCycles[lifeCycleName], { isBlock: true }),
+            linkAfter: [
+              CLASS_DEFINE_CHUNK_NAME.ConstructorStart
+            ]
+          };
+        }
+        if (normalizeName === "ngOnInit") {
+          return {
+            type: import_lowcode_code_generator24.ChunkType.STRING,
+            fileType: cfg.fileType,
+            name: ANGULAR_CHUNK_NAME.ClassOnInitContent,
+            content: generateFunction(lifeCycles[lifeCycleName], { isBlock: true }),
+            linkAfter: [
+              ANGULAR_CHUNK_NAME.ClassOnInitStart
+            ]
+          };
+        }
+        if (normalizeName === "ngOnDestroy") {
+          return {
+            type: import_lowcode_code_generator24.ChunkType.STRING,
+            fileType: cfg.fileType,
+            name: ANGULAR_CHUNK_NAME.ClassOnDestroyContent,
+            content: generateFunction(lifeCycles[lifeCycleName], { isBlock: true }),
+            linkAfter: [
+              ANGULAR_CHUNK_NAME.ClassOnDestroyStart
+            ]
+          };
+        }
+        return {
+          type: import_lowcode_code_generator24.ChunkType.STRING,
+          fileType: cfg.fileType,
+          name: CLASS_DEFINE_CHUNK_NAME.InsMethod,
+          content: generateFunction(lifeCycles[lifeCycleName], {
+            name: exportName,
+            isMember: true
+          }),
+          linkAfter: [
+            ANGULAR_CHUNK_NAME.ClassOnDestroyEnd
+          ]
+        };
+      }).filter((i) => !!i);
+      next.chunks.push(...chunks.filter((x) => x !== null));
+    }
+    return next;
+  };
+  return plugin;
+};
+var ajsContainerLifeCycle_default = pluginFactory11;
+
+// src/solutions/plugins/ajsContainerMethod.ts
+var import_lowcode_code_generator25 = __toESM(require_lib());
+var { generateFunction: generateFunction2 } = import_lowcode_code_generator25.default.utils.jsExpression;
+var { isValidIdentifier: isValidIdentifier2 } = import_lowcode_code_generator25.default.utils.validate;
+var pluginFactory12 = (config) => {
+  const cfg = {
+    fileType: import_lowcode_code_generator25.FileType.TS,
+    ...config
+  };
+  const plugin = async (pre) => {
+    const next = {
+      ...pre
+    };
+    const ir = next.ir;
+    if (!ir.methods) {
+      return next;
+    }
+    const { methods } = ir;
+    const chunks = Object.keys(methods).map((methodName) => ({
+      type: import_lowcode_code_generator25.ChunkType.STRING,
+      fileType: cfg.fileType,
+      name: CLASS_DEFINE_CHUNK_NAME.InsMethod,
+      content: generateFunction2(methods[methodName], { name: methodName, isMember: true }),
+      linkAfter: [
+        ANGULAR_CHUNK_NAME.ClassOnDestroyEnd
+      ]
+    }));
+    next.chunks.push(...chunks);
+    return next;
+  };
+  return plugin;
+};
+var ajsContainerMethod_default = pluginFactory12;
+
 // src/solutions/ajs.ts
 function createIceJsProjectBuilder(options) {
   return createProjectBuilder({
@@ -11977,12 +12143,18 @@ function createIceJsProjectBuilder(options) {
       components: [
         ajsCommonDeps_default(),
         ajsContentClass_default(),
+        ajsContainerInitState_default(),
+        ajsContainerLifeCycle_default(),
+        ajsContainerMethod_default(),
         ajsLess_default(),
         ajsHtml_default()
       ],
       pages: [
         ajsCommonDeps_default(),
         ajsContentClass_default(),
+        ajsContainerInitState_default(),
+        ajsContainerLifeCycle_default(),
+        ajsContainerMethod_default(),
         ajsLess_default(),
         ajsHtml_default()
       ],
@@ -12061,7 +12233,7 @@ async function run(args, options) {
     const createProjectBuilder2 = src_default.ajs;
     const builder = createProjectBuilder2(solutionOptions);
     const generatedSourceCodes = await builder.generateProject(schema);
-    const publisher = import_lowcode_code_generator23.default.publishers.disk();
+    const publisher = import_lowcode_code_generator26.default.publishers.disk();
     await publisher.publish({
       project: generatedSourceCodes,
       outputPath: options.output || "generated",
