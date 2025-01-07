@@ -10995,6 +10995,9 @@ function isIPublicTypeJSSlot(variable) {
 function isDirectiveProperty(value) {
   return (value == null ? void 0 : value.type) === "Directive";
 }
+function isJSFunction(value) {
+  return (value == null ? void 0 : value.type) === "JSFunction";
+}
 function isStandardPieceType(type) {
   return ["NodeCodePieceAfter" /* AFTER */, "NodeCodePieceChildren" /* CHILDREN */, "NodeCodePieceBefore" /* BEFORE */, "Directive" /* DIRECTIVE */].includes(type);
 }
@@ -11038,8 +11041,17 @@ function generateAttrValue(attrData, scope, config) {
     value = JSON.stringify(convertObjectToString(attrData.attrValue));
     return [{ type: "NodeCodePieceAttr" /* ATTR */, name: attrData.attrName, value }];
   }
+  if (attrData.attrName === "__events") {
+    const { eventDataList = {} } = attrData.attrValue;
+    return eventDataList.map((item) => {
+      return { type: "NodeCodePieceAttr" /* ATTR */, name: `(${item.name})`, value: `${item.relatedEventName}()` };
+    });
+  }
   if (isDirectiveProperty(attrData.attrValue)) {
     return [{ type: "Directive" /* DIRECTIVE */, name: attrData.attrName, value: attrData.attrName }];
+  }
+  if (isJSFunction(attrData.attrValue)) {
+    return [];
   }
   if (isIPublicTypeJSSlot(attrData.attrValue)) {
     const childrenParts = [];
