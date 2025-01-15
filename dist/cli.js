@@ -7885,6 +7885,7 @@ var SchemaParser = class {
   parse(schemaSrc) {
     const compDeps = {};
     const moduleDeps = [];
+    const modules = [];
     const internalDeps = {};
     let utilsDeps = [];
     const schema = this.decodeSchema(schemaSrc);
@@ -7900,7 +7901,10 @@ var SchemaParser = class {
           destructuring: (_a = info.destructuring) != null ? _a : false
         };
         compDeps[info.componentName] = depInfo;
-        moduleDeps.push(depInfo);
+        if (!modules.includes(depInfo.ngModule)) {
+          modules.push(depInfo.ngModule);
+          moduleDeps.push(depInfo);
+        }
       }
     });
     let containers;
@@ -10848,10 +10852,10 @@ var pluginFactory = () => {
       name: COMMON_CHUNK_NAME.FileVarDefine,
       content: `
         const routes: Routes = [
-          { path: '', redirectTo: '/${firstComponent.path}', pathMatch: 'full' },
+          { path: '', redirectTo: '/${firstComponent.path.toLowerCase()}', pathMatch: 'full' },
           ${ir.routes.map(
         (route) => `{
-                            path: '${route.path}',
+                            path: '${route.path.toLowerCase()}',
                             component: ${route.componentName}Component,
                           }
                         `
@@ -11023,7 +11027,7 @@ function processCodePiece(p) {
   return { value: `${name}=${value}`, type };
 }
 function generateAttrValue(attrData, scope, config) {
-  var _a, _b;
+  var _a, _b, _c;
   let type = "NodeCodePieceAttr" /* ATTR */;
   let name = attrData.attrName;
   let value = "";
@@ -11048,14 +11052,15 @@ function generateAttrValue(attrData, scope, config) {
     });
   }
   if (isDirectiveProperty(attrData.attrValue)) {
-    return [{ type: "Directive" /* DIRECTIVE */, name: attrData.attrName, value: attrData.attrName }];
+    const value2 = ((_a = attrData.attrValue) == null ? void 0 : _a.value) || "";
+    return value2 ? [{ type: "Directive" /* DIRECTIVE */, name: value2, value: value2 }] : [];
   }
   if (isJSFunction(attrData.attrValue)) {
     return [];
   }
   if (isIPublicTypeJSSlot(attrData.attrValue)) {
     const childrenParts = [];
-    const attrValue = (_b = (_a = attrData.attrValue) == null ? void 0 : _a.value) != null ? _b : "";
+    const attrValue = (_c = (_b = attrData.attrValue) == null ? void 0 : _b.value) != null ? _c : "";
     if (attrValue) {
       if (Array.isArray(attrValue)) {
         attrValue.forEach((nodeItem) => {
@@ -11113,10 +11118,9 @@ function generateAttrs(nodeItem, scope, config) {
 }
 function generateBasicNode(nodeItem, scope, config) {
   const pieces = [];
-  const tagObj = ((config == null ? void 0 : config.tagMapping) || import_lodash2.default.identity)(nodeItem.componentName);
-  const jsonString = JSON.stringify(tagObj);
+  const label = nodeItem.ngTag || "div";
   pieces.push({
-    value: jsonString,
+    value: label,
     type: "NodeCodePieceTag" /* TAG */
   });
   return pieces;
@@ -11144,13 +11148,13 @@ function linkPieces(pieces) {
   attrsParts = attrsParts ? ` ${attrsParts}` : "";
   const afterParts = pieces.filter((p) => p.type === "NodeCodePieceAfter" /* AFTER */).map((p) => p.value).join("");
   const directiveParts = pieces.filter((p) => p.type === "Directive" /* DIRECTIVE */).map((p) => p.value).join(" ");
-  const { startTag, closeTag, isSelfClosingTag = false } = JSON.parse(tagsPieces[0].value);
-  if (isSelfClosingTag) {
-    return `<${startTag} ${directiveParts} ${attrsParts} />`;
+  const tag = tagsPieces[0].value;
+  if (tag === "input") {
+    return `<${tag} ${directiveParts} ${attrsParts} />`;
   }
-  return `<${startTag} ${directiveParts} ${attrsParts}>
+  return `<${tag} ${directiveParts} ${attrsParts}>
           ${childrenParts}
-          </${closeTag}>
+          </${tag}>
           ${afterParts}`;
 }
 function generateNodeSchema(nodeItem, scope, config) {
@@ -11207,78 +11211,11 @@ var pluginFactory2 = (config) => {
     nodeTypeMapping: {},
     ...config
   };
-  const nodeTypeMapping = {
-    Div: { startTag: "div", closeTag: "div" },
-    Component: { startTag: "div", closeTag: "div" },
-    Page: { startTag: "div", closeTag: "div" },
-    Block: { startTag: "div", closeTag: "div" },
-    Row: { startTag: "div nz-row", closeTag: "div" },
-    Col: { startTag: "div nz-col", closeTag: "div" },
-    Button: { startTag: "button bm-button", closeTag: "button" },
-    Divider: { startTag: "bm-divider", closeTag: "bm-divider" },
-    Icon: { startTag: "i bmIcon", closeTag: "i" },
-    Form: { startTag: "form bmForm", closeTag: "form" },
-    FormItem: { startTag: "bm-form-item", closeTag: "bm-form-item" },
-    FormLabel: { startTag: "bm-form-label", closeTag: "bm-form-label" },
-    FormControl: { startTag: "bm-form-control", closeTag: "bm-form-control" },
-    CheckboxGroup: { startTag: "bm-checkbox-group", closeTag: "bm-checkbox-group" },
-    Checkbox: { startTag: "label bm-checkbox", closeTag: "label" },
-    CompoundSelector: { startTag: "bm-compound-selector", closeTag: "bm-compound-selector" },
-    Selector: { startTag: "bm-selector", closeTag: "bm-selector" },
-    InputGroup: { startTag: "bm-input-group", closeTag: "bm-input-group" },
-    InputSearch: { startTag: "bm-input-search", closeTag: "bm-input-search" },
-    InputNumber: { startTag: "bm-input-number", closeTag: "bm-input-number" },
-    InputPercent: { startTag: "bm-input-percent", closeTag: "bm-input-percent" },
-    Input: { startTag: "input bmInput", closeTag: "", isSelfClosingTag: true },
-    RadioGroup: { startTag: "bm-radio-group", closeTag: "bm-radio-group" },
-    RadioButton: { startTag: "label bm-radio-button", closeTag: "label" },
-    Radio: { startTag: "label bm-radio", closeTag: "label" },
-    Select: { startTag: "bm-select", closeTag: "bm-select" },
-    Switch: { startTag: "bm-switch", closeTag: "bm-switch" },
-    TimePicker: { startTag: "bm-time-picker", closeTag: "bm-time-picker" },
-    TreeSelect: { startTag: "bm-tree-select", closeTag: "bm-tree-select" },
-    OpenWindow: { startTag: "bm-open-window", closeTag: "bm-open-window" },
-    Cascader: { startTag: "bm-cascader", closeTag: "bm-cascader" },
-    DatePicker: { startTag: "bm-date-picker", closeTag: "bm-date-picker" },
-    Slider: { startTag: "bm-slider", closeTag: "bm-slider" },
-    Collapse: { startTag: "bm-collapse", closeTag: "bm-collapse" },
-    CollapsePanel: { startTag: "bm-collapse-panel", closeTag: "bm-collapse-panel" },
-    DescriptionList: { startTag: "bm-description-list", closeTag: "bm-description-list" },
-    InfoCard: { startTag: "bm-info-card", closeTag: "bm-info-card" },
-    Popover: { startTag: "button bm-button bm-popover", closeTag: "button" },
-    Statistic: { startTag: "bm-statistic", closeTag: "bm-statistic" },
-    Tags: { startTag: "bm-tags", closeTag: "bm-tags" },
-    Timeline: { startTag: "bm-timeline", closeTag: "bm-timeline" },
-    TimelineItem: { startTag: "bm-timeline-item", closeTag: "bm-timeline-item" },
-    Tooltip: { startTag: "div bmTooltip", closeTag: "div" },
-    TooltipWrapper: { startTag: "bm-tooltip-wrapper", closeTag: "bm-tooltip-wrapper" },
-    Upload: { startTag: "bm-upload", closeTag: "bm-upload" },
-    IndicatorCard: { startTag: "bm-indicator-card", closeTag: "bm-indicator-card" },
-    ContainExplicit: { startTag: "bm-contain-explicit", closeTag: "bm-contain-explicit" },
-    Tree: { startTag: "bm-tree", closeTag: "bm-tree" },
-    Dropdown: { startTag: "a bm-dropdown", closeTag: "a" },
-    Pagination: { startTag: "bm-pagination", closeTag: "bm-pagination" },
-    SecondTitle: { startTag: "bm-second-title", closeTag: "bm-second-title" },
-    Tabs: { startTag: "bm-tabset", closeTag: "bm-tabset" },
-    Tab: { startTag: "bm-tab", closeTag: "bm-tab" },
-    Alert: { startTag: "bm-alert", closeTag: "bm-alert" },
-    Drawer: { startTag: "bm-drawer", closeTag: "bm-drawer" },
-    Message: { startTag: `button bm-button (click)="createBasicMessage('info')"`, closeTag: "button" },
-    Modal: { startTag: `button bm-button [bmType]="'primary'" (click)="showInfo()"`, closeTag: "button" },
-    Popconfirm: { startTag: "a bm-popconfirm", closeTag: "a" },
-    PopconfirmButton: { startTag: "button bm-popconfirm", closeTag: "button" },
-    Progress: { startTag: "bm-progress", closeTag: "bm-progress" },
-    Result: { startTag: "bm-result", closeTag: "bm-result" },
-    Spin: { startTag: "bm-spin", closeTag: "bm-spin" }
-  };
   const plugin = async (pre) => {
     const next = {
       ...pre
     };
-    const generatorPlugins = {
-      tagMapping: (v) => nodeTypeMapping[v] || v
-    };
-    const generator = createAngularNodeGenerator(generatorPlugins);
+    const generator = createAngularNodeGenerator();
     const ir = next.ir;
     const scope = Scope.createRootScope();
     const htmlContent = generator(ir, scope);
@@ -11814,53 +11751,6 @@ var ajsPrettier_default = factory;
 
 // src/solutions/plugins/ajsPageModule.ts
 var import_lowcode_code_generator22 = __toESM(require_lib());
-
-// src/solutions/map/bmCustom.ts
-var BmModuleMap = {
-  Button: "BmButtonModule",
-  Divider: "BmDividerModule",
-  Icon: "BmIconModule",
-  Dropdown: "BmDropdownModule",
-  Pagination: "BmPaginationModule",
-  SecondTitle: "BmSecondTitleModule",
-  Form: "BmFormModule",
-  Cascader: "BmCascaderModule",
-  Checkbox: "BmCheckboxModule",
-  CheckboxGroup: "BmCheckboxModule",
-  CompoundSelector: "BmCompoundSelectorModule",
-  DatePicker: "BmDatePickerModule",
-  Input: "BmInputModule",
-  InputNumber: "BmInputNumberModule",
-  InputPercent: "BmInputPercentModule",
-  InputSearch: "BmInputSearchModule",
-  OpenWindow: "BmOpenWindowModule",
-  Radio: "BmRadioModule",
-  Select: "BmSelectModule",
-  Slider: "BmSliderModule",
-  Switch: "BmSwitchModule",
-  TimePicker: "BmTimePickerModule",
-  TreeSelect: "BmTreeSelectModule",
-  Collapse: "BmCollapseModule",
-  ContainExplicit: "BmContainExplicitModule",
-  DescriptionList: "BmDescriptionListModule",
-  IndicatorCard: "BmIndicatorCardModule",
-  Popover: "BmPopoverModule",
-  Statistic: "BmStatisticModule",
-  Tags: "BmTagsModule",
-  Timeline: "BmTimelineModule",
-  Tooltip: "BmTooltipModule",
-  Tree: "BmTreeModule",
-  Alert: "BmAlertModule",
-  Drawer: "BmDrawerModule",
-  Message: "BmMessageModule",
-  Modal: "BmModalModule",
-  Popconfirm: "BmPopconfirmModule",
-  Progress: "BmProgressModule",
-  Result: "BmResultModule",
-  Spin: "BmSpinModule"
-};
-
-// src/solutions/plugins/ajsPageModule.ts
 var pluginFactory9 = () => {
   const plugin = async (pre) => {
     const next = {
@@ -11878,15 +11768,6 @@ var pluginFactory9 = () => {
       `,
       linkAfter: []
     });
-    next.chunks.push({
-      type: import_lowcode_code_generator22.ChunkType.STRING,
-      fileType: import_lowcode_code_generator22.FileType.TS,
-      name: COMMON_CHUNK_NAME.InternalDepsImport,
-      content: `
-        import { PagesRoutingModule } from './pages-routing.module';
-      `,
-      linkAfter: [COMMON_CHUNK_NAME.ExternalDepsImport]
-    });
     const componentList = [];
     const fileNameList = [];
     if (ir && ir.deps && ir.deps.length > 0) {
@@ -11903,37 +11784,42 @@ var pluginFactory9 = () => {
     if (ir.moduleDeps.length > 0) {
       ir.moduleDeps.forEach((pkg) => {
         componentModuleList.push({
-          module: BmModuleMap[pkg.exportName],
+          module: pkg.ngModule,
           package: pkg.ngPackage,
           main: (pkg == null ? void 0 : pkg.main) || ""
         });
       });
     }
     if (componentModuleList.length > 0) {
+      let content = "";
       componentModuleList.forEach((i) => {
         if (i.module) {
-          next.chunks.push({
-            type: import_lowcode_code_generator22.ChunkType.STRING,
-            fileType: import_lowcode_code_generator22.FileType.TS,
-            name: COMMON_CHUNK_NAME.InternalDepsImport,
-            content: `import { ${i.module} } from '${i.package}/${i.main}';`,
-            linkAfter: [COMMON_CHUNK_NAME.ExternalDepsImport]
-          });
+          content += `import { ${i.module} } from '${i.package}/${i.main}';
+`;
         }
+      });
+      next.chunks.push({
+        type: import_lowcode_code_generator22.ChunkType.STRING,
+        fileType: import_lowcode_code_generator22.FileType.TS,
+        name: COMMON_CHUNK_NAME.InternalDepsImport,
+        content,
+        linkAfter: [COMMON_CHUNK_NAME.ExternalDepsImport]
       });
     }
     if (fileNameList.length > 0) {
+      let content = `import { PagesRoutingModule } from './pages-routing.module';
+`;
       fileNameList.forEach((i) => {
         const componentName = i.charAt(0).toUpperCase() + i.slice(1);
-        next.chunks.push({
-          type: import_lowcode_code_generator22.ChunkType.STRING,
-          fileType: import_lowcode_code_generator22.FileType.TS,
-          name: COMMON_CHUNK_NAME.InternalDepsImport,
-          content: `
-            import { ${componentName}Component } from './${i}/${i}.component';
-          `,
-          linkAfter: [COMMON_CHUNK_NAME.ExternalDepsImport]
-        });
+        content += `import { ${componentName}Component } from './${i}/${i}.component';
+`;
+      });
+      next.chunks.push({
+        type: import_lowcode_code_generator22.ChunkType.STRING,
+        fileType: import_lowcode_code_generator22.FileType.TS,
+        name: COMMON_CHUNK_NAME.InternalDepsImport,
+        content,
+        linkAfter: [COMMON_CHUNK_NAME.ExternalDepsImport]
       });
     }
     next.chunks.push({
