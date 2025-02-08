@@ -11002,8 +11002,16 @@ function isDirectiveProperty(value) {
 function isJSFunction(value) {
   return (value == null ? void 0 : value.type) === "JSFunction";
 }
+function isJSExpression(value) {
+  return (value == null ? void 0 : value.type) === "JSExpression";
+}
+function isUnsafeString(str) {
+  return str.startsWith("_unsafe");
+}
 function isStandardPieceType(type) {
-  return ["NodeCodePieceAfter" /* AFTER */, "NodeCodePieceChildren" /* CHILDREN */, "NodeCodePieceBefore" /* BEFORE */, "Directive" /* DIRECTIVE */].includes(type);
+  return ["NodeCodePieceAfter" /* AFTER */, "NodeCodePieceChildren" /* CHILDREN */, "NodeCodePieceBefore" /* BEFORE */, "Directive" /* DIRECTIVE */].includes(
+    type
+  );
 }
 function isStyleKey(name) {
   return name === "style";
@@ -11027,12 +11035,12 @@ function processCodePiece(p) {
   return { value: `${name}=${value}`, type };
 }
 function generateAttrValue(attrData, scope, config) {
-  var _a, _b, _c;
+  var _a, _b, _c, _d;
   let type = "NodeCodePieceAttr" /* ATTR */;
   let name = attrData.attrName;
   let value = "";
   const ignoreList = ["nzShowTotal", "nzTabBarExtraContent", "nzTabBarStyle", "nzAddIcon", "ref"];
-  if (ignoreList.includes(attrData.attrName)) {
+  if (ignoreList.includes(attrData.attrName) || isUnsafeString(attrData.attrName)) {
     return [];
   }
   if (isEmptyString(attrData.attrValue)) {
@@ -11058,23 +11066,43 @@ function generateAttrValue(attrData, scope, config) {
   if (isJSFunction(attrData.attrValue)) {
     return [];
   }
+  if (isJSExpression(attrData.attrValue)) {
+    name = `[${attrData.attrName}]`;
+    value = ((_b = attrData.attrValue) == null ? void 0 : _b.ngValue) || "";
+    return value ? [{ type, name, value }] : [];
+  }
   if (isIPublicTypeJSSlot(attrData.attrValue)) {
+    const codeParts = [];
+    let templateName = "";
+    let isInline = false;
+    if (attrData.attrValue.name) {
+      const parseValue = JSON.parse(attrData.attrValue.name);
+      templateName = parseValue.templateName;
+      isInline = parseValue.isInline;
+      codeParts.push({
+        type: "NodeCodePieceAttr" /* ATTR */,
+        name: `[${attrData.attrName}]`,
+        value: templateName
+      });
+    }
     const childrenParts = [];
-    const attrValue = (_c = (_b = attrData.attrValue) == null ? void 0 : _b.value) != null ? _c : "";
+    const attrValue = (_d = (_c = attrData.attrValue) == null ? void 0 : _c.value) != null ? _d : "";
     if (attrValue) {
       if (Array.isArray(attrValue)) {
         attrValue.forEach((nodeItem) => {
           if (config == null ? void 0 : config.self) {
             let childrenStr = config.self(nodeItem, scope);
-            childrenStr = `
-            <ng-template #${attrData.attrName}>
+            if (isInline) {
+              childrenStr = `
+            <ng-template ${templateName ? `#${templateName}` : ""}>
               ${childrenStr}
             </ng-template>
             `;
-            childrenParts.push({
-              type: "NodeCodePieceChildren" /* CHILDREN */,
-              value: childrenStr
-            });
+              childrenParts.push({
+                type: "NodeCodePieceChildren" /* CHILDREN */,
+                value: childrenStr
+              });
+            }
           }
         });
       }
@@ -11082,7 +11110,7 @@ function generateAttrValue(attrData, scope, config) {
     childrenParts.forEach((item) => {
       item.type = "NodeCodePieceChildren" /* CHILDREN */;
     });
-    return childrenParts;
+    return [...codeParts, ...childrenParts];
   }
   value = generateCompositeAjsType(attrData.attrValue, scope, {
     handlers: config == null ? void 0 : config.handlers,
